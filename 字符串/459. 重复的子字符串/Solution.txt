@@ -1,0 +1,34 @@
+// 给定一个非空的字符串 s ，检查是否可以通过由它的一个子串重复多次构成。
+// kmp算法
+class Solution {
+    public boolean repeatedSubstringPattern(String s) {
+        //利用kmp算法求解
+        int len = s.length();
+        if(len == 0) {
+            return false;
+        }
+        int []next = new int[len];
+        getNext(next,s); 
+        // 判断next数组最后一位必须》=0 如果出现abac 末尾是 -1 返回的是true        
+        if(len % (len - (next[len-1] + 1)) == 0 && next[len - 1] >= 0) {
+            //说明 (数组长度-最长相等前后缀的长度) 正好可以被 数组的长度整除，说明有该字符串有重复的子字符串。
+            return true;
+        }
+        return false;
+
+    }
+    void getNext(int[] next,String s) {
+        int j = -1; //前缀起始位置
+        next[0] = j;    
+        for(int i = 1; i < s.length(); i++) {   // i指向后缀起始位置
+            while(j >= 0 && s.charAt(j+1) != s.charAt(i)) {
+                j = next[j];
+            }
+            // 当前缀和后缀相等时 next数组++
+            if(s.charAt(i) == s.charAt(j+1)) {
+                j++;
+            }
+            next[i] = j;
+        }
+    }
+}

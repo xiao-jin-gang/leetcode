@@ -1,0 +1,34 @@
+
+// 给你四个整数数组 nums1、nums2、nums3 和 nums4 ，数组长度都是 n ，请你计算有多少个元组 (i, j, k, l) 能满足：
+// 0 <= i, j, k, l < n
+// nums1[i] + nums2[j] + nums3[k] + nums4[l] == 0
+
+class Solution {
+    //AB 一组,CD一组
+    // A[i] + B[j]
+    public int fourSumCount(int[] nums1, int[] nums2, int[] nums3, int[] nums4) {
+        HashMap<Integer,Integer> map = new HashMap<Integer,Integer>();
+        int res = 0;
+        for (int i = 0; i < nums1.length; i++) {
+            for (int j = 0; j < nums2.length; j++) {
+                int sumAB = nums1[i] + nums2[j];
+                if (map.containsKey(sumAB)) {
+                    map.put(sumAB , map.get(sumAB) + 1);    //相同的和计数
+                }else {
+                    map.put(sumAB,1);   //存放AB之和
+                }
+            }
+        }
+        // 计算34之和的相反数
+        for(int i = 0; i < nums3.length; i++) {
+            for(int j = 0; j < nums4.length; j++) {
+                int sum34 = -(nums3[i] +nums4[j]);
+                if(map.containsKey(sum34)) {
+                    res += map.get(sum34);
+                }
+            }
+        }
+        return res;
+    }
+}
+//时间复杂度为O(n2)

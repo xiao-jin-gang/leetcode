@@ -1,0 +1,25 @@
+// 给定两个字符串 s 和 t ，编写一个函数来判断 t 是否是 s 的字母异位词。
+// 注意：若 s 和 t 中每个字符出现的次数都相同，则称 s 和 t 互为字母异位词。
+
+
+//哈希表
+class Solution {
+    public boolean isAnagram(String s, String t) {
+        if ( s.length() != t.length() ) {
+            return false;
+        }
+        int []table = new int[26];
+        // s字符串
+        for (int i = 0; i < s.length(); i++) {
+            table[s.charAt(i) - 'a' ]++;
+        }
+        // t字符串
+        for (int i = 0; i < t.length(); i++) {
+            table[t.charAt(i) - 'a']--;
+            if (table[t.charAt(i) - 'a'] < 0 ){
+                return false;
+            }
+        }
+        return true;
+    }
+}

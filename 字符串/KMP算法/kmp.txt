@@ -1,0 +1,64 @@
+// 前缀表：前缀表是用来回退的，记录了模式串与文本串不匹配的时候，模式串应该从哪里开始重新匹配
+
+前缀表的任务是当前位置匹配失败，找到之前已经匹配上的位置，在重新匹配，意味着某个字符串失败时，前缀表会告诉你下一步匹配中
+模式串应该跳到哪个位置
+
+
+// 前缀表是包含首字母，不包含尾字母的所有子串例如aabaaf
+// 前缀：
+   a  aa   aab   aaba aabaa
+
+// 后缀：只包含尾字母不包含首字母
+// f af aaf baaf abaaf aabaaf
+
+最长相等前后缀 
+
+
+class Solution {
+    public int strStr(String haystack, String needle) {
+        if(needle.length() ==0 ){
+            return 0;
+        }
+        int[] next = new int[needle.length()];
+        //得到kmp中next数组
+        getNext(next,needle);
+        int j = -1;
+        for( int i = 0; i < haystack.length(); i++){
+            //判断和主串不等
+            while( j >= 0 && needle.charAt(j+1) != haystack.charAt(i)) {
+                j = next[j];
+            }
+            //遍历主串 判断是否和模式串相等
+            if (needle.charAt(j+1) == haystack.charAt(i)) {
+                j++;
+            }
+            //结束
+            if (j == needle.length()-1) {
+                return (i - needle.length() + 1);
+            }
+        }
+        return -1;
+    }
+    //得到KMP中next数组 参数：next数组和模式串s
+    void getNext(int[] next, String s){
+        //初始化
+        int j = -1;
+        next[0] = j;    //前缀末尾位置
+        char []array = s.toCharArray();
+        //获取模式串中最长相同前后缀   i指向后缀末尾位置
+        for(int i = 1; i < array.length; i++){
+
+	    // 前缀末尾和后缀末尾字符不等 
+            while( j >= 0 && array[i] != array[j+1]){
+                //j回退到next[j]数组中的值的位置
+                j = next[j];
+            }
+            // 前缀末尾和后缀末尾字符相等
+            if(array[i] == array[j+1]) {
+                j++;
+            }
+            
+            next[i] = j;
+        }
+    }
+}
