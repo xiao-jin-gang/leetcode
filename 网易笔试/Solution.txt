@@ -1,0 +1,31 @@
+public class Solution {
+    public static int count = 0;    //删除的数量
+    public static void main(String[] args) {
+        Scanner sc =new Scanner(System.in);
+        int n = sc.nextInt();
+        int[] num = new int[n];
+        for (int i = 0; i < n;i++) {
+            num[i] =sc.nextInt();
+        }
+        Stack<Integer> stack = new Stack<Integer>();
+        int num1 = new Solution().getNum(num, n,stack);
+        System.out.println(num1);
+    }
+    public int getNum(int[] nums, int n,Stack<Integer> stack){
+        for (int i = 0; i < nums.length; i++) {
+           diGui(stack,nums[i]);
+        }
+        return count;
+    }
+    //返回的是数量
+    public void diGui(Stack<Integer> stack,int x) {
+        if(!stack.empty() && x <= stack.peek()) {
+            stack.pop();
+            count++;
+            diGui(stack,x);
+        }else if( stack.empty() || stack.peek() < x ){
+            stack.push(x);
+            return;
+        }
+    }
+}
